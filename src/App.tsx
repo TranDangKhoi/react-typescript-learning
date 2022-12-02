@@ -29,13 +29,13 @@ const user: {
   lastName: string;
   age: number;
   isSophomore: boolean;
-  school: string;
+  school: (string | number)[];
 } = {
   firstName: "Tran",
   lastName: "Dang Khoi",
   age: 19,
   isSophomore: true,
-  school: "FPT Aptech",
+  school: ["FPT Aptech", "Kinh Te Quoc Dan"],
 };
 
 function App() {
