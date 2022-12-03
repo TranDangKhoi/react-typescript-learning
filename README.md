@@ -35,7 +35,7 @@ function displayReview(
 }
 ```
 
-## Nguyên tắc báo các kiểu đặc biệt
+## Khái niệm và nguyên tắc báo các kiểu đặc biệt
 
 #### Object
 
@@ -162,4 +162,66 @@ const reviews: {
     date: "04/08/2022",
   },
 ];
+```
+
+#### Tuple
+
+- Chúng ta sử dụng Tuple để chứa 2 hoặc nhiều giá trị có kiểu dữ liệu khác nhau và các dữ liệu đó phải được nhập vào theo đúng thứ tự kiểu dữ liệu mà ta đã khai báo, ví dụ như có thể chứa string và number trong ví dụ sau:
+
+```ts
+var empId: number = 1;
+var empName: string = "Steve";
+
+// Cách đúng:
+var employee: [number, string] = [1, "Steve"];
+
+// Cách sai:
+var employee: [number, string] = ["Steve", 1];
+```
+
+- Ta còn có thêm **Tuple chứa nhiều kiểu giá trị trùng nhau**:
+
+```ts
+var user: [number, string, boolean, number, string];
+
+user = [1, "Steve", true, 20, "Admin"];
+```
+
+- Và cả Tuple Array:
+
+```ts
+var employee: [number, string][];
+
+employee = [
+  [1, "Steve"],
+  [2, "Bill"],
+  [3, "Jeff"],
+];
+```
+
+- Chúng ta truy cập và lấy giá trị từ mảng Tuple như sau:
+
+```ts
+var employee: [number, string] = [1, "Steve"];
+employee[0]; // returns 1
+employee[1]; // returns "Steve"
+```
+
+- Chúng ta có thể sử dụng `.push()` để thêm phần tử vào Tuple:
+
+```ts
+var employee: [number, string] = [1, "Steve"];
+
+employee.push(2, "Bill");
+
+console.log(employee); //Output: [1, 'Steve', 2, 'Bill']
+```
+
+- Tuple cũng giống như Array, chúng ta có thể sử dụng các method có sẵn trong Array cho Tuple như `pop(), push(), concat(), ...v.v`:
+
+```ts
+var employee: [number, string] = [1, "Steve"];
+
+employee[1] = employee[1].concat(" Jobs");
+console.log(employee); //Output: [1, 'Steve Jobs']
 ```

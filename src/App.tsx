@@ -46,7 +46,20 @@ const travelItem: {
   };
 }[] = [
   {
-    name: "https://images.unsplash.com/photo-1560264280-88b68371db39?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80",
+    name: "Zuich, Switzerland",
+    image:
+      "https://images.unsplash.com/photo-1560264280-88b68371db39?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80",
+    totalReviews: 148,
+    rating: 4.8,
+    price: 30000000,
+    location: "Switzerland",
+    date: "11/06/2003",
+    departure: "Brazil",
+    features: {
+      freeWifi: true,
+      freeParking: true,
+      specialOffers: false,
+    },
   },
 ];
 
@@ -56,12 +69,14 @@ const user: {
   age: number;
   isSophomore: boolean;
   school: (string | number)[];
+  contact: [number, string];
 } = {
   firstName: "Tran",
   lastName: "Dang Khoi",
   age: 19,
   isSophomore: true,
   school: ["FPT Aptech", "Kinh Te Quoc Dan"],
+  contact: [09324252523, "baits12@gmail.com"],
 };
 
 function App() {
