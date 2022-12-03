@@ -129,3 +129,5 @@ const user: {
 ```
 
 - Tuy nhiên thì Union Types không chỉ có như vậy :(
+
+- Ví dụ ta có một mảng tên là `reviews`

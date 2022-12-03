@@ -1,6 +1,12 @@
 import { useEffect, useState } from "react";
-
-const reviews = [
+// arrObj : {}[] = [{}]
+const reviews: {
+  name: string;
+  image: string;
+  stars: number;
+  premiumUser: boolean;
+  date: string;
+}[] = [
   {
     name: "Khoi Dev",
     image: "",
