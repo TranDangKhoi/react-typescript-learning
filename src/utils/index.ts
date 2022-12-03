@@ -1,4 +1,4 @@
-export function total(a: number, b: number) {
+export function total(a: number, b: number): number {
   return a + b;
 }
 // const age: number = 19;

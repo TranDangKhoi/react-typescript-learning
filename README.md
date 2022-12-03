@@ -110,7 +110,7 @@ const user: {
   school: ["FPT Aptech", "Kinh Te Quoc Dan", 69],
 ```
 
-- Với trường hợp này, thì ta sẽ phải sử dụng `Union types`, union trong tiếng anh là sự liên minh. liên kết nên cũng dễ hiểu thôi nhỉ, ta sẽ liên kết string và number lại với nhau
+- Với trường hợp này, thì ta sẽ phải sử dụng `Union types`, union trong tiếng anh là sự liên minh, liên kết nên cũng dễ hiểu thôi nhỉ, ta sẽ liên minh string và number lại với nhau, cho chúng nó sống có tình người để có thể chia sẻ chỗ ở cùng nhau
 
 ```ts
 const user: {
@@ -124,7 +124,7 @@ const user: {
   lastName: "Dang Khoi",
   age: 19,
   isSophomore: true,
-  school: ["FPT Aptech", "Kinh Te Quoc Dan"],
+  school: ["FPT Aptech", "Kinh Te Quoc Dan", 69],
 };
 ```
 
@@ -304,4 +304,129 @@ enum Permission {
 }
 ```
 
-- Đó vậy là các bạn đã hiểu tại sao nó gọi là Enum rồi, khi ta khai báo cho `ADMIN = 1`, thì `EDITOR` sẽ bằng `ADMIN + 1` `EDITOR sẽ = 2`, và MODERATOR cũng tương tự, tức là `MODERATOR = EDITOR + 1 = 2 + 1 = 3`
+- Đó vậy là các bạn đã hiểu tại sao nó gọi là Enum rồi, khi ta khai báo cho `ADMIN = 1`, thì `EDITOR` sẽ bằng `ADMIN + 1 => EDITOR sẽ = 2`, và `MODERATOR` cũng tương tự, tức là `MODERATOR = EDITOR + 1 = 2 + 1 = 3`
+
+#### Any
+
+- Nên cho cái này lếch, nên hạn chế sử dụng đến nó vì `Typescript` mà sử dụng `any` thì chả khác gì `Javascript` cả, chỉ nên sử dụng `KHI QUÁ BÍ`
+
+#### Union
+
+- Mặc dù ở trên mình có 1 ví dụ về `Union` rồi nhưng mình chưa có một mục riêng cho nó nên mình sẽ viết lại. `Union types` được sử dụng khi một biến hoặc một tham số cho hàm có thể có nhiều kiểu kết hợp với nhau.
+
+```ts
+const user: {
+  firstName: string;
+  lastName: string;
+  age: number;
+  isSophomore: boolean;
+  // dateOfBirth có thể là string hoặc number
+  dateOfBirth: string | number;
+} = {
+  firstName: "Tran",
+  lastName: "Dang Khoi",
+  age: 19,
+  isSophomore: true,
+  dateOfBirth: 89328942,
+};
+```
+
+- Còn đối với Union Array thì, ta chỉ cần `bọc các union types lại bằng dấu ngoặc () rồi thêm dấu [] bên phải`, ví dụ như sau:
+
+```ts
+const user: {
+  firstName: string;
+  lastName: string;
+  // school là một array và trong mảng có thể chứa string hoặc number đều được
+  school: (string | number)[];
+} = {
+  firstName: "Tran",
+  lastName: "Dang Khoi",
+  school: ["FPT Aptech", "Kinh Te Quoc Dan", 69],
+};
+```
+
+#### Literal
+
+- Literal type có nghĩa là giá trị là một giá trị chính xác. Ví dụ bạn chỉ cho người dùng chọn `một trong 3 độ` tuổi là `18, 30, 40`, thì bạn sẽ sử dụng Literal type:
+
+```ts
+const user: {
+  firstName: string;
+  lastName: string;
+  // age chỉ được = 18 hoặc 30 hoặc 40
+  age: 18 | 30 | 40;
+} = {
+  firstName: "Tran",
+  lastName: "Dang Khoi",
+  age: 19,
+};
+
+// Output: age = 19 => Chương trình lỗi và không biên dịch lun
+```
+
+- Sửa lại thành:
+
+```ts
+const user: {
+  firstName: string;
+  lastName: string;
+  // age chỉ được = 18 hoặc 30 hoặc 40
+  age: 18 | 30 | 40;
+} = {
+  firstName: "Tran",
+  lastName: "Dang Khoi",
+  age: 18,
+};
+```
+
+- Ok ok, cách này cũng hay nhưng ta có thể khai báo đống Literal type của ở ngoài:
+
+```ts
+type Age = 18 | 30 | 40;
+
+const user: {
+  firstName: string;
+  lastName: string;
+  // age chỉ được = 18 hoặc 30 hoặc 40
+  age: Age;
+} = {
+  firstName: "Tran",
+  lastName: "Dang Khoi",
+  age: 18,
+};
+```
+
+- Đó như này thì trông sẽ clean hơn, nhưng thực ra ... ta nên tách nó ra thành 1 file riêng, mình sẽ gọi nó là `types.ts` và `export nó ra`
+
+```ts
+export type Age = 18 | 30 | 40;
+```
+
+# Function type
+
+- Khi mình nói tới `Function type` thì ý mình không phải sẽ có một kiểu dữ liệu `Function` khi ta khai báo một `function`:
+
+```ts
+// KHÔNG CÓ ĐÂU NHA
+export function total(a: number, b: number): function {
+  return a + b;
+}
+```
+
+- Mà `Function type` ý mình ở đây là `kiểu dữ liệu mà Function đó return về`, ở `function total` bên trên thì nó sẽ `return về number`, nên ta sẽ code như sau khi bạn muốn chắc ăn:
+
+```ts
+export function total(a: number, b: number): number {
+  return a + b;
+}
+```
+
+- Tuy nhiên, có một vài `function không return về gì cả` thì nó cũng sẽ có một type riêng và các bạn nào mà `đã học môn lập trình căn bản` rồi thì hầu hết đều biết thôi, đó là `Void`
+
+```ts
+export function total(a: number, b: number): void {
+  console.log(a + b);
+  // Không return gì cả
+}
+```

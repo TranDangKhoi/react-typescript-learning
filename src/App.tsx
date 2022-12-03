@@ -1,4 +1,6 @@
 import { useEffect, useState } from "react";
+import { Permission } from "./utils/enums";
+import { Age } from "./utils/types";
 // arrObj : {}[] = [{}]
 const reviews: {
   name: string;
@@ -62,16 +64,10 @@ const travelItem: {
     },
   },
 ];
-enum Permission {
-  ADMIN = "ADMIN",
-  EDITOR = "EDITOR",
-  MODERATOR = "MODERATOR",
-}
-
 const user: {
   firstName: string;
   lastName: string;
-  age: number;
+  age: Age;
   isSophomore: boolean;
   school: (string | number)[];
   contact: [number, string];
@@ -79,7 +75,7 @@ const user: {
 } = {
   firstName: "Tran",
   lastName: "Dang Khoi",
-  age: 19,
+  age: 18,
   isSophomore: true,
   school: ["FPT Aptech", "Kinh Te Quoc Dan"],
   contact: [09324252523, "baits12@gmail.com"],
