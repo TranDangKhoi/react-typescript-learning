@@ -130,4 +130,36 @@ const user: {
 
 - Tuy nhiên thì Union Types không chỉ có như vậy :(
 
-- Ví dụ ta có một mảng tên là `reviews`
+- Ví dụ ta có một mảng chứa nhiều `objects` tên là `reviews` thì ta sẽ khai báo như sau:
+
+```ts
+const reviews: {
+  name: string;
+  image: string;
+  stars: number;
+  premiumUser: boolean;
+  date: string;
+}[] = [
+  {
+    name: "Khoi Dev",
+    image: "",
+    stars: 5,
+    premiumUser: true,
+    date: "05/09/2022",
+  },
+  {
+    name: "CharkaUI",
+    image: "",
+    stars: 4,
+    premiumUser: false,
+    date: "03/08/2022",
+  },
+  {
+    name: "React Query",
+    image: "",
+    stars: 3,
+    premiumUser: false,
+    date: "04/08/2022",
+  },
+];
+```

@@ -30,6 +30,26 @@ const reviews: {
   },
 ];
 
+const travelItem: {
+  name: string;
+  image: string;
+  totalReviews: number;
+  rating: number;
+  location: string;
+  price: number;
+  date: string;
+  departure: string;
+  features: {
+    freeWifi: boolean;
+    freeParking: boolean;
+    specialOffers: boolean;
+  };
+}[] = [
+  {
+    name: "https://images.unsplash.com/photo-1560264280-88b68371db39?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80",
+  },
+];
+
 const user: {
   firstName: string;
   lastName: string;
@@ -45,7 +65,6 @@ const user: {
 };
 
 function App() {
-  const [count, setCount] = useState(0);
   function displayReview(
     totalReviews: number,
     name: string,
