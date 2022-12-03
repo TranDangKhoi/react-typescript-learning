@@ -225,3 +225,83 @@ var employee: [number, string] = [1, "Steve"];
 employee[1] = employee[1].concat(" Jobs");
 console.log(employee); //Output: [1, 'Steve Jobs']
 ```
+
+#### Enum
+
+- Enum, các bạn có thể hiểu là viết rút gọn của `Enumerator (bộ đếm, bộ đánh số)`, tại sao lại có tên gọi này? Tìm hiểu thêm thì ta sẽ rõ thôi
+
+- Ở đây, mình sẽ tạo ra một bài toán về vai trò của user trong một app. Thông thường, trong một app có rất nhiều quyền `(admin, editor, moderator, police, premium, user)`, nhưng bài toán mình sắp code ở dưới đây sẽ sử dụng 3 role là `(admin, editor, moderator)`.
+
+- Và đây là cách các bạn không nên code:
+
+```ts
+const ADMIN = "ADMIN";
+const MODERATOR = "MODERATOR";
+const EDITOR = "EDITOR";
+
+const user: {
+  firstName: string;
+  lastName: string;
+  permission: string;
+} = {
+  firstName: "Tran",
+  lastName: "Dang Khoi",
+  permission: ADMIN,
+};
+```
+
+- Cách này thực sự rất không hay và không tối ưu
+
+- Để giải quyết bài toán này thì ta có thể sử dụng `Enum`, và thực sự phải nói là `Enum` trong `Typescript` **rất hay và rất khỏe**. Giờ mình sẽ code lại đoạn code ở trên:
+
+```ts
+enum Permission {
+  ADMIN = "ADMIN",
+  EDITOR = "EDITOR",
+  MODERATOR = "MODERATOR",
+}
+
+const user: {
+  firstName: string;
+  lastName: string;
+  permission: string;
+} = {
+  firstName: "Tran",
+  lastName: "Dang Khoi",
+  permission: Permission.ADMIN,
+};
+```
+
+- Just like that, mọi thứ thật pơ phệch và dễ hiểu, Enum sẽ có quickSuggest và khi di chuột vào dòng chữ Permission.ADMIN bạn cũng sẽ hiểu đoạn code đó nghĩa là gì
+
+- Nhưng ở trên mình đã giải thích rằng Enum là một bộ đếm số mà, mà ví dụ ở trên làm gì có số má gì đâu ?... Đúng là như vậy thật! Tại vì mình chưa làm ví dụ về số cho các bạn xem thôi, thông thường khi lưu trữ `role` trong `database` người ta thường lưu ở dưới dạng `int` nên mình sẽ code lại cho `enum Permission` như sau:
+
+```ts
+enum Permission {
+  ADMIN = 1,
+  EDITOR = 2,
+  MODERATOR = 3,
+}
+
+const user: {
+  firstName: string;
+  lastName: string;
+  permission: number; // must be changed to number
+} = {
+  firstName: "Tran",
+  lastName: "Dang Khoi",
+  permission: Permission.ADMIN,
+};
+```
+
+- Nhưng ... code như trên thì cũng đâu có gì hay đâu, chả khẳng định được gì. Vậy thì các bạn xem tiếp nhé, đây là cái hay của Enum, đó chính là trong hầu hết mọi trường hợp bạn chỉ cần xác định con số cho trường đầu tiên thôi, và các **trường sau sẽ hơn trường nằm trước nó 1 đơn vị**.
+
+```ts
+enum Permission {
+  ADMIN = 1,
+  EDITOR, // = 2
+  MODERATOR, // 3
+}
+```
+
+- Đó vậy là các bạn đã hiểu tại sao nó gọi là Enum rồi, khi ta khai báo cho `ADMIN = 1`, thì `EDITOR` sẽ bằng `ADMIN + 1` `EDITOR sẽ = 2`, và MODERATOR cũng tương tự, tức là `MODERATOR = EDITOR + 1 = 2 + 1 = 3`

@@ -62,6 +62,11 @@ const travelItem: {
     },
   },
 ];
+enum Permission {
+  ADMIN = "ADMIN",
+  EDITOR = "EDITOR",
+  MODERATOR = "MODERATOR",
+}
 
 const user: {
   firstName: string;
@@ -70,6 +75,7 @@ const user: {
   isSophomore: boolean;
   school: (string | number)[];
   contact: [number, string];
+  permission: string;
 } = {
   firstName: "Tran",
   lastName: "Dang Khoi",
@@ -77,6 +83,7 @@ const user: {
   isSophomore: true,
   school: ["FPT Aptech", "Kinh Te Quoc Dan"],
   contact: [09324252523, "baits12@gmail.com"],
+  permission: Permission.ADMIN,
 };
 
 function App() {
