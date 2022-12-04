@@ -1,3 +1,5 @@
+import { Product, ProductNewFeature } from "./interfaces";
+
 export function total(a: number, b: number): number {
   return a + b;
 }
@@ -5,16 +7,34 @@ export function total(a: number, b: number): number {
 // const name: string = "Khoi";
 // const isSophomore: boolean = true;
 
-// Tuple: Chúng ta sử dụng Tuple để chứa 2 hoặc nhiều giá trị có kiểu dữ liệu khác nhau
+let randomNumber: unknown;
+randomNumber = 100;
+if (typeof randomNumber === "number") {
+  randomNumber.toFixed(2);
+}
 
-// Enum
+function raiseError(err: string): never {
+  throw new Error(err);
+}
 
-// Any
+function reject() {
+  return raiseError("Error");
+}
 
-// Union
+let loop = function forever() {
+  while (true) {
+    console.log("Hello world");
+  }
+};
 
-// Literal
+// Interface
+const product: ProductNewFeature = {
+  name: "Car",
+  brand: "BMW",
+  color: "red",
+  speed: "100km/h",
+};
 
-// Function
+function addProduct(product: ProductNewFeature) {}
 
-// Void
+addProduct(product);

@@ -1,9 +1,12 @@
 # Primitive types
 
-- typeof
-- Number Types
-- String Types
-- Boolean Types
+- Number
+- String
+- Boolean
+- Bigint
+- Undefined
+- Symbol
+- Null
 
 # Structural types
 
@@ -37,7 +40,7 @@ function displayReview(
 
 ## Khái niệm và nguyên tắc báo các kiểu đặc biệt
 
-#### Object
+### Object
 
 - Không khai báo object như này:
 
@@ -66,7 +69,7 @@ const user: {
 };
 ```
 
-#### Array
+### Array
 
 - Tiếp tục với ví dụ trên, nếu trong object đó có một properties với kiểu dữ liệu là mảng thì sao, ví dụ:
 
@@ -164,7 +167,7 @@ const reviews: {
 ];
 ```
 
-#### Tuple
+### Tuple
 
 - Chúng ta sử dụng Tuple để chứa 2 hoặc nhiều giá trị có kiểu dữ liệu khác nhau và các dữ liệu đó phải được nhập vào theo đúng thứ tự kiểu dữ liệu mà ta đã khai báo, ví dụ như có thể chứa string và number trong ví dụ sau:
 
@@ -226,7 +229,7 @@ employee[1] = employee[1].concat(" Jobs");
 console.log(employee); //Output: [1, 'Steve Jobs']
 ```
 
-#### Enum
+### Enum
 
 - Enum, các bạn có thể hiểu là viết rút gọn của `Enumerator (bộ đếm, bộ đánh số)`, tại sao lại có tên gọi này? Tìm hiểu thêm thì ta sẽ rõ thôi
 
@@ -306,11 +309,11 @@ enum Permission {
 
 - Đó vậy là các bạn đã hiểu tại sao nó gọi là Enum rồi, khi ta khai báo cho `ADMIN = 1`, thì `EDITOR` sẽ bằng `ADMIN + 1 => EDITOR sẽ = 2`, và `MODERATOR` cũng tương tự, tức là `MODERATOR = EDITOR + 1 = 2 + 1 = 3`
 
-#### Any
+### Any
 
 - Nên cho cái này lếch, nên hạn chế sử dụng đến nó vì `Typescript` mà sử dụng `any` thì chả khác gì `Javascript` cả, chỉ nên sử dụng `KHI QUÁ BÍ`
 
-#### Union
+### Union
 
 - Mặc dù ở trên mình có 1 ví dụ về `Union` rồi nhưng mình chưa có một mục riêng cho nó nên mình sẽ viết lại. `Union types` được sử dụng khi một biến hoặc một tham số cho hàm có thể có nhiều kiểu kết hợp với nhau.
 
@@ -346,7 +349,7 @@ const user: {
 };
 ```
 
-#### Literal
+### Literal
 
 - Literal type có nghĩa là giá trị là một giá trị chính xác. Ví dụ bạn chỉ cho người dùng chọn `một trong 3 độ` tuổi là `18, 30, 40`, thì bạn sẽ sử dụng Literal type:
 
@@ -430,3 +433,181 @@ export function total(a: number, b: number): void {
   // Không return gì cả
 }
 ```
+
+### Unknown
+
+- Đúng như tên gọi của nó, `unknown` dược sử dụng khi `ta không biết kiểu dữ liệu của giá trị đó là gì`. Những giá trị đó có thể tới từ user, hoặc có thể chúng ta muốn chấp nhận mọi values trong API của chúng ta. Và trong trường hợp này thì ta sẽ muốn sử dụng `unknonw` cho những giá trị đó để bảo với `compiler` rằng, những giá trị này có thể là bất kì thứ gì.
+
+```ts
+let notSure: unknown = 4;
+notSure = "maybe a string instead";
+
+// OK, definitely a boolean
+notSure = false;
+```
+
+- Nếu bạn sử dụng `unknown`, bạn có thể `thu hẹp phạm vi của nó lại` bằng cách kiểm tra type của nó để biết rằng giá trị của nó đang nắm giữ là thuộc kiểu dữ liệu nào.
+
+```ts
+declare const maybe: unknown;
+// 'maybe' could be a string, object, boolean, undefined, or other types
+const aNumber: number = maybe;
+// Type 'unknown' is not assignable to type 'number'.
+
+if (maybe === true) {
+  // TypeScript knows that maybe is a boolean now
+  const aBoolean: boolean = maybe;
+  // So, it cannot be a string
+  const aString: string = maybe;
+Type 'boolean' is not assignable to type 'string'.
+}
+
+if (typeof maybe === "string") {
+  // TypeScript knows that maybe is a string
+  const aString: string = maybe;
+  // So, it cannot be a boolean
+  const aBoolean: boolean = maybe;
+Type 'string' is not assignable to type 'boolean'.
+}
+```
+
+### Never
+
+- Là 1 type mà `không chứa giá trị gì hết`, `chỉ sử dụng khi function của bạn trả ra Error` hoặc `là một vòng lặp vô tận`, hãy cũng mình làm các ví dụ sau:
+
+```ts
+function raiseError(err: string): never {
+  throw new Error(err);
+}
+```
+
+- Và nếu mình `viết 1 function khác` nhưng `giá trị return của nó là 1 function có type là error giống như trên` thì mặc nhiên, `function đó cũng sẽ có type là error nếu ta không xác định type cho nó`:
+
+```ts
+function raiseError(err: string): never {
+  throw new Error(err);
+}
+
+// function reject() : never {}
+function reject() {
+  return raiseError("Error");
+}
+```
+
+- Và nếu `function` nào mà có một `vòng lặp chạy vô tận` thì `type` của nó cũng sẽ là `never`:
+
+```ts
+let loop = function forever() {
+  while (true) {
+    console.log("Hello world");
+  }
+};
+```
+
+### Interface
+
+- `Interface` cho phép bạn định nghĩ thuộc tính là gì và phương thức là gì mà đối tượng cần để được thực thi `(implement)`. Nếu đối tượng tuân thủ đúng khuôn mẫu `Interface` thì đối tượng đã `implement` `Interface` ấy sẽ được thi hành đúng. Nếu không thì sẽ phát sinh lỗi ngay lập tức. Những khái niệm như `Interface` hay `Abstract`, những người hay code `Java` thường sẽ `rất dễ hiểu`
+
+- Nói khái niệm thì có vẻ hơi khó hiểu nên cùng làm ví dụ nhóe:
+
+  - Bắt đầu với việc mình sẽ tạo ra một bài tập nhỏ, đó chính là tạo ra thông tin chi tiết của một ô tô và `add nó vào` một `array object`, thông thường nếu chưa học tới `Interface` bạn sẽ tạo và sử dụng nó như sau
+
+  ```ts
+  const car: {
+    brand: string;
+    color: string;
+    maxSpeed: string;
+    soldOut: boolean;
+  } = {
+    brand: "BMW",
+    color: "white",
+    maxSpeed: "300km/h",
+    soldOut: false,
+  };
+
+  function addProduct(product: {
+    brand: string;
+    color: string;
+    maxSpeed: string;
+    soldOut: boolean;
+  }) {
+    // Code here
+  }
+  ```
+
+  - Các bạn có thể thấy, mình phải viết đi viết lại rất nhiều công đoạn khai báo tên key, kiểu dữ liệu của key rất nhiều lần. Nhưng chuỗi ngày đó rồi cũng chấm dứt khi bạn học tới `Interface` trong `Typescript`
+
+  ```ts
+  interface ICar {
+    brand: string;
+    color: string;
+    maxSpeed: string;
+    soldOut: boolean;
+  }
+
+  const car: ICar = {
+    brand: "BMW",
+    color: "white",
+    maxSpeed: "300km/h",
+    soldOut: false,
+  };
+
+  function addProduct(product: ICar) {
+    // Code here
+  }
+  ```
+
+  - Đó chỉ cần viết `Interface` cho `Car` và thay đống object dài loằng ngoằng kia thành `ICar` là xong. Ta có thể sử dụng nó ở nhiều nơi bằng cách viết ra một file riêng rồi `export` ra:
+
+  ```ts
+  export interface ICar {
+    brand: string;
+    color: string;
+    maxSpeed: string;
+    soldOut: boolean;
+  }
+  ```
+
+  - Ngoài ra, còn một chức năng rất hay giống như `Java` nữa đó chính là `extends`, khi ta muốn mở rộng thêm các `properties` khác cho `ICar` nữa, thì ta có thể tạo một `Interface` nữa, ví dụ tên là `ISportCar`:
+
+  ```ts
+  export interface ICar {
+    brand: string;
+    color: string;
+    maxSpeed: string;
+    soldOut: boolean;
+  }
+
+  export interface ISportCar extends ICar {
+    releaseDate: string;
+  }
+  ```
+
+  - Chỉ cần bạn viết như này thì mặc định `ISportCar` sẽ chứa cả các properties của `ICar` nữa, chứ ta không nên copy các properties của Car qua SportCar
+
+  - Vậy sẽ có thêm câu hỏi là nếu mình `đặt 2 interface trùng tên nhau thì sao?` Thì `Typescript` nó sẽ hiểu 2 cái `Interfaces` đó là 1 và `Typescript` sẽ `merge` chúng nó vào với nhau
+
+  ```ts
+  export interface ICar {
+    name: string;
+    brand: string;
+    color: string;
+  }
+
+  export interface ICar {
+    speed: string;
+  }
+  ```
+
+  - Đoạn code ở trên sẽ giống với như sau:
+
+  ```ts
+  export interface ICar {
+    name: string;
+    brand: string;
+    color: string;
+    speed: string;
+  }
+  ```
+
+  - Nhưng ta không nên làm như này, rất dễ bị loạn và không cần thiết, nếu thực sự cần `speed` nằm ở `ICar` thì ta nên sử dụng nó ngay lúc khởi tạo lần đầu luôn
