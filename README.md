@@ -568,7 +568,7 @@ let loop = function forever() {
   }
   ```
 
-  - Ngoài ra, còn một chức năng rất hay giống như `Java` nữa đó chính là `extends`, khi ta muốn mở rộng thêm các `properties` khác cho `ICar` nữa, thì ta có thể tạo một `Interface` nữa, ví dụ tên là `ISportCar`:
+  - Ngoài ra, còn một chức năng rất hay giống như `Java` nữa đó chính là `extends`, khi ta muốn mở rộng thêm các properties khác cho `ICar` nữa, thì ta có thể sử dụng `extends`, ví dụ ta tạo một `Interface` nữa tên là `ISportCar` sau đó `extends` nó từ thằng `ICar`:
 
   ```ts
   export interface ICar {
