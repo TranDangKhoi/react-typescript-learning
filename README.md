@@ -618,3 +618,122 @@ let loop = function forever() {
   ```ts
   export type IFinalCar = ICar & ISportCar;
   ```
+
+# Function overloading
+
+- `Function overloading` là trường hợp mà các `functions` có `tên giống nhau`, có `cùng số lượng parameters (chỉ đúng khi parameters không phải Object hay Array)` nhưng `các parameters của các functions này có kiểu dữ liệu khác`. `Function overloading` thường được thấy trong code của các thư viện của `React` còn để phát triển web thì cực kì ít dùng
+
+- Thoạt nghe thì thấy bình thường thôi nhưng mà các bạn phải nhận ra một điều là: Trong 1 `file`, nếu mà có 2 `function` cùng tên thì chắc chắn rằng sẽ **lỗi**
+
+```ts
+function total(a: number, b: number): number {
+  return a + b;
+}
+
+function total(a: string, b: string): string {
+  return a + b;
+}
+// Error: Duplicate function implementation.
+```
+
+- Vậy phải làm sao để ta có thể áp dụng được Function Overloading? Ta sẽ sửa lại đoạn code như sau:
+
+```ts
+function total(a: number, b: number): number;
+function total(a: string, b: string): string;
+function total(a: any, b: any) {
+  return a + b;
+}
+
+total(5, 7); // 12
+total("a", "b"); // ab
+```
+
+- Đó vậy là ta đã có được hai trường hợp là sử dụng `tham số là Number` và `tham số là String` truyền vào `total()`. Đừng lầm tưởng mình đặt kiểu dữ liệu cho `a` và `b` là `any` ở `dòng thứ 3`, mà muốn truyền vào `a` và `b` kiểu dữ liệu gì cũng được nhé. Nếu muốn test các bạn có thể thử `comment dòng số 2` đi:
+
+```ts
+function total(a: number, b: number): number;
+// function total(a: string, b: string): string;
+function total(a: any, b: any) {
+  return a + b;
+}
+
+total(5, 7); // 12
+total("a", "b"); // Không chạy
+
+// Error: Argument of type 'string' is not assignable to parameter of type 'number'.
+```
+
+- Ở trên, mình có nói là `Function Overloading` sẽ có cùng số lượng parameters truyền vào, nhưng điều đó là không hoàn toàn đúng, nó chỉ đúng khi ta không truyền vào một object. Nên bây giờ mình sẽ ví dụ về một bài tập khi ta truyền vào Object thì phải làm thế nào?
+
+  - Đầu tiên, như trên mình tạo ra 3 function và sử dụng `Interface` để chứa tọa độ `x` và `y`:
+
+  ```ts
+  interface ICoordinate {
+    x: number;
+    y: number;
+  }
+
+  function parseCoordinate(obj: ICoordinate): ICoordinate;
+
+  function parseCoordinate(x: number, y: number): ICoordinate;
+
+  function parseCoordinate(param1: any, param2: any): ICoordinate {
+    return (coords = {
+      x: param1,
+      y: param2,
+    });
+    return coords;
+  }
+  // Error: This overload signature is not compatible with its implementation signature.
+  ```
+
+  - Lúc này chương trình của ta sẽ lỗi, hiểu nôm na là `function parseCoordinate thứ nhất` đang không tương thích với `thằng thực thi` nó (tức là thằng `passCoordinate số 3`), bởi thằng số 3 đang truyền vào `2 tham số` còn thằng số 1 truyền vào 1 `Object`. Vậy để sửa lỗi này ta phải làm sao? Ta phải cho `tham số thứ 2 `của `Function thực thi` thành `optional (?) `:
+
+  ```ts
+  interface ICoordinate {
+    x: number;
+    y: number;
+  }
+
+  function parseCoordinate(obj: ICoordinate): ICoordinate;
+
+  function parseCoordinate(x: number, y: number): ICoordinate;
+
+  function parseCoordinate(param1: any, param2?: any): ICoordinate {
+    let coords = {
+      x: param1,
+      y: param2,
+    };
+    return coords;
+  }
+  ```
+
+  - Đó như ta thấy nó đã hết sạch lỗi, nhưng xử lý như thế này thì chưa được tối ưu, `param1` và `param2` đang là kiểu `Any` vậy nên khi gán vào `x` và `y` ta phải sử dụng `Type Assertion (as)` để gán cho nó một kiểu dữ liệu, còn nếu ta mà truyền vào `Object` thì `param1` sẽ là kiểu `Object`, không xét tới `param2` nữa:
+
+  ```ts
+  interface ICoordinate {
+    x: number;
+    y: number;
+  }
+
+  function parseCoordinate(obj: ICoordinate): ICoordinate;
+  function parseCoordinate(x: number, y: number): ICoordinate;
+  function parseCoordinate(param1: any, param2?: any): ICoordinate {
+    let coords = {
+      x: param1 as number,
+      y: param2 as number,
+    };
+    if (typeof param1 === "object") {
+      coords = {
+        ...(param1 as ICoordinate),
+      };
+    } else {
+      coords = {
+        x: param1 as number,
+        y: param2 as number,
+      };
+    }
+    return coords;
+  }
+  ```

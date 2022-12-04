@@ -105,6 +105,7 @@ function App() {
             alt=""
           />
         </div>
+
         <div className="review-info">
           {displayReview(
             reviews.length,
