@@ -14,3 +14,6 @@ export interface ICard {
   image: string;
   link: string;
 }
+
+// Assertion: &
+export type FinalProduct = Product & ProductNewFeature;

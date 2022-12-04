@@ -1,4 +1,4 @@
-import { Product, ProductNewFeature } from "./interfaces";
+import { FinalProduct, Product, ProductNewFeature } from "./interfaces";
 
 export function total(a: number, b: number): number {
   return a + b;
@@ -28,13 +28,13 @@ let loop = function forever() {
 };
 
 // Interface
-const product: ProductNewFeature = {
+const product: FinalProduct = {
   name: "Car",
   brand: "BMW",
   color: "red",
   speed: "100km/h",
 };
 
-function addProduct(product: ProductNewFeature) {}
+function addProduct(product: FinalProduct) {}
 
 addProduct(product);

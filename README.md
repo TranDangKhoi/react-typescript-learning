@@ -538,6 +538,7 @@ let loop = function forever() {
   - Các bạn có thể thấy, mình phải viết đi viết lại rất nhiều công đoạn khai báo tên key, kiểu dữ liệu của key rất nhiều lần. Nhưng chuỗi ngày đó rồi cũng chấm dứt khi bạn học tới `Interface` trong `Typescript`
 
   ```ts
+  // LƯU Ý: GIỐNG NHƯ TRONG C# NẾU MUỐN ĐẶT TÊN CHO INTERFACE THÌ PHẢI CÓ CHỮ I
   interface ICar {
     brand: string;
     color: string;
@@ -611,3 +612,9 @@ let loop = function forever() {
   ```
 
   - Nhưng ta không nên làm như này, rất dễ bị loạn và không cần thiết, nếu thực sự cần `speed` nằm ở `ICar` thì ta nên sử dụng nó ngay lúc khởi tạo lần đầu luôn
+
+  - Hoặc ... ta có thể sử dụng `Intersection Type (&)`:
+
+  ```ts
+  export type IFinalCar = ICar & ISportCar;
+  ```
