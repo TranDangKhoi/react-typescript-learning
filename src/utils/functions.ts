@@ -24,5 +24,10 @@ function parseCoordinate(param1: any, param2?: any): ICoordinate {
   return coords;
 }
 
-// parseCoordinateFromObject({ x: 10, y: 20 });
-// parseCoordinateFromObjectValues(10, 20);
+parseCoordinate({ x: 10, y: 20 });
+parseCoordinate(10, 20);
+
+// Normal function
+function avg(a: number, b: number): number {
+  return (a + b) / 2;
+}

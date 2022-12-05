@@ -15,5 +15,5 @@ export interface ICard {
   link: string;
 }
 
-// Assertion: &
+// Intersection: &
 export type FinalProduct = Product & ProductNewFeature;

@@ -737,3 +737,42 @@ total("a", "b"); // Không chạy
     return coords;
   }
   ```
+
+# Intersection Type
+
+- Ở trên mình có nói rồi, nó là dấu `&` và để merge 2 Interface lại
+
+```ts
+export interface Product {
+  name: string;
+  brand: string;
+  color: string;
+}
+
+export interface ProductNewFeature extends Product {
+  speed: string;
+}
+
+export type FinalProduct = Product & ProductNewFeature;
+```
+
+# Type Casting
+
+- Khi ta code như sau:
+
+```tsx
+const Card = () => {
+  useEffect(() => {
+    const input = document.querySelector("input");
+    //Error: Object is possibly null
+    console.log(input.value);
+  }, []);
+  return (
+    <div>
+      <input type="text" />
+    </div>
+  );
+};
+```
+
+- Ta nhận được một lỗi: `Object is possibly null`, và phải hover chuột vào input ta mới thấy nó đang ở dạng union types: `const input: HTMLInputElement | null`, nên ta phải cast nó sang `HTMLInputElement` để cho lỗi kia biến mất, ngoài ra còn rất nhiều DOM Type khác nữa nên ta phải cẩn trọng
