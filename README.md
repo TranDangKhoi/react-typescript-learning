@@ -776,3 +776,73 @@ const Card = () => {
 ```
 
 - Ta nhận được một lỗi: `Object is possibly null`, và phải hover chuột vào input ta mới thấy nó đang ở dạng union types: `const input: HTMLInputElement | null`, nên ta phải cast nó sang `HTMLInputElement` để cho lỗi kia biến mất, ngoài ra còn rất nhiều DOM Type khác nữa nên ta phải cẩn trọng
+
+# Cách viết các loại function nâng cao hơn với Typescript
+
+1.` Arrow Function`
+
+```ts
+const addString = (x: string, y: string): string => `${x} and ${y}`;
+```
+
+2.  `Function` với `Default Parameters Value`
+
+```ts
+function addNumberWithDefaultParams(a: number = 0, b: number = 0): number {
+  return a + b;
+}
+```
+
+3. `Function` có `Union Type Parameter`
+
+```ts
+function format(
+  title: string,
+  description: string,
+  amount: string | number
+): string {
+  return `${title} and ${description} and ${amount}`;
+}
+
+format("Hey", "Handsome", ">.<");
+format("Hey", "Handsome", 2);
+```
+
+4. `Function` trả về `Promise`
+
+```ts
+const fetchData = (url: string): Promise<string> =>
+  Promise.resolve(`Get data from ${url}`);
+```
+
+5. `Function` có `Rest Parameters`
+
+```ts
+function information(id: number, ...names: string[]): string {
+  return `${id} ${names.join(" ")}`;
+}
+
+information(1, "Khoi", "Tofu"); // (1, ["Khoi", "Tofu"]) nhưng đã bị destructured
+```
+
+6. `Function` có `Callback` đơn giản
+
+```ts
+function handleFile(text: string, callback: () => void): void {
+  console.log(text);
+  callback();
+}
+```
+
+7. `Function` có `Callback` và bên trong `Callback` lại có `Parameters`
+
+```ts
+function handleUpdateArray(
+  numbers: number[],
+  update: (n: number) => number
+): number[] {
+  return numbers.map((item) => update(item));
+}
+
+handleUpdateArray([1, 2, 3, 4, 5], (n) => n * 5); // 5 10 15 20 25
+```

@@ -95,27 +95,6 @@ function App() {
       </>
     );
   }
-
-  return (
-    <div>
-      <div className="review">
-        <div className="review-image">
-          <img
-            src="https://images.unsplash.com/photo-1669977041372-51bbee0b8a09?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80"
-            alt=""
-          />
-        </div>
-
-        <div className="review-info">
-          {displayReview(
-            reviews.length,
-            reviews[0].name,
-            reviews[0].premiumUser
-          )}
-        </div>
-      </div>
-    </div>
-  );
 }
 
 export default App;
