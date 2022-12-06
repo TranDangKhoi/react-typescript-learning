@@ -71,7 +71,7 @@ const user: {
   isSophomore: boolean;
   school: (string | number)[];
   contact: [number, string];
-  permission: string;
+  permission: Permission;
 } = {
   firstName: "Tran",
   lastName: "Dang Khoi",

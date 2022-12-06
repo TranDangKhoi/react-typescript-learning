@@ -779,13 +779,13 @@ const Card = () => {
 
 # Cách viết các loại function nâng cao hơn với Typescript
 
-1.` Arrow Function`
+1. `Arrow Function`
 
 ```ts
 const addString = (x: string, y: string): string => `${x} and ${y}`;
 ```
 
-2.  `Function` với `Default Parameters Value`
+2. `Function` với `Default Parameters Value`
 
 ```ts
 function addNumberWithDefaultParams(a: number = 0, b: number = 0): number {
