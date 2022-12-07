@@ -846,3 +846,69 @@ function handleUpdateArray(
 
 handleUpdateArray([1, 2, 3, 4, 5], (n) => n * 5); // 5 10 15 20 25
 ```
+
+# Generic Types
+
+Generics là việc cho phép truyền type vào components(function, class, interface) như là 1 tham số. Điều này sẽ giúp các components mềm dẻo hơn. Tái sử dụng tốt hơn.
+
+### Tại sao lại cần Generic?
+
+Chúng ta tạo một function nhận vào 2 tham số cùng kiểu dữ liệu (string | number) và return về một Turple.
+
+```ts
+// union type : `string` and `number`
+type NS = string | number;
+
+// function that returns a tuple
+function getTuple(a: NS, b: NS): [NS, NS] {
+  return [a, b];
+}
+
+let stringArray = getTuple("hello", "world");
+
+let numberArray = getTuple(1.25, 2.56);
+
+//case error
+let mixedArray = getTuple(1.25, "world");
+
+// Property 'toUpperCase' does not exist on type 'NS'.
+console.log(stringArray.map((s) => s.toUpperCase()));
+
+// Error: Property 'toFixed' does not exist on type 'NS'.
+console.log(numberArray.map((n) => n.toFixed()));
+```
+
+Ở ví dụ trên function `getTuple` có 2 tham số `a` và `b `có kiểu NS (Union type) và trả về một tuple `[NS, NS]`.
+
+Bây giờ chúng ta có một vài vấn đề với function trên:
+
+- Đầu tiên chúng ta không thể ràng buộc `a` và `b` có cùng kiểu dữ liệu bời vì `a` và `b` có thể là chuỗi hoặc số.
+
+- Thứ hai là khi function trả về 1 `tuple (array)` chứa các giá trị có kiểu `string` hoặc `number` và trình biên dịch Typescript không cho phép ta làm như vậy bởi vì nó cần phải biết chính xác kiểu dữ liệu của các giá trị trả về.
+
+Cách để giải quyết vấn đề là sử dụng `any` type cho `a` và `b` và `tuple [any, any]`. Hoặc ta có thể sử dụng `Type Assertion` để ép kiểu giá trị trong tuple (NS thành string hoặc number).
+Tuy nhiên cả 2 cách đều có thể gây ra lỗi nếu như chúng ta không tiến hành kiểm tra thủ công kiểu dữ liệu của các giá trị.
+
+### Và Generic type xuất hiện, giúp chúng ta giải quyết những vấn đề trên 😆
+
+Typescript hỗ trợ mạnh cho generics, chúng ta có thể sử dụng generic cho function, class, interface....
+
+Bây giờ ta sẽ sửa lại ví dụ trên bằng cách sử dụng Generic function:
+
+```ts
+// function that returns a tuple
+function getTuple<T>(a: T, b: T): [T, T] {
+  return [a, b];
+}
+
+let stringArray = getTuple<string>("hello", "world");
+
+let numberArray = getTuple<number>(1.25, 2.56);
+
+let ucStrings = stringArray.map((s) => s.toUpperCase());
+
+let numInts = numberArray.map((n) => n.toFixed());
+
+// Error: Argument of type '"world"' is not assignable to parameter of type 'number'.
+let mixedArray = getTuple(1.25, "world");
+```

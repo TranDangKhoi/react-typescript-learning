@@ -78,23 +78,24 @@ const user: {
   age: 18,
   isSophomore: true,
   school: ["FPT Aptech", "Kinh Te Quoc Dan"],
-  contact: [09324252523, "baits12@gmail.com"],
+  contact: [9324252523, "baits12@gmail.com"],
   permission: Permission.ADMIN,
 };
 
 function App() {
-  function displayReview(
-    totalReviews: number,
-    name: string,
-    premiumUser: boolean
-  ) {
-    return (
-      <>
-        Review total <strong>{totalReviews}</strong> | Last reviewed by{" "}
-        <strong>{name}</strong> {premiumUser ? "⭐️" : ""}
-      </>
-    );
-  }
+  return <div></div>;
 }
 
+function displayReview(
+  totalReviews: number,
+  name: string,
+  premiumUser: boolean
+) {
+  return (
+    <>
+      Review total <strong>{totalReviews}</strong> | Last reviewed by{" "}
+      <strong>{name}</strong> {premiumUser ? "⭐️" : ""}
+    </>
+  );
+}
 export default App;
