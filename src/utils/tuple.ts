@@ -9,3 +9,6 @@ function addThreeDimensionalCoordinate(
 }
 
 addThreeDimensionalCoordinate([1, 100, 200], [200, 400, 600]);
+
+// union type : `string` and `number`
+type NS = string | number;

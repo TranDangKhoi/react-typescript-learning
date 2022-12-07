@@ -849,7 +849,9 @@ handleUpdateArray([1, 2, 3, 4, 5], (n) => n * 5); // 5 10 15 20 25
 
 # Generic Types
 
-Generics là việc cho phép truyền type vào components(function, class, interface) như là 1 tham số. Điều này sẽ giúp các components mềm dẻo hơn. Tái sử dụng tốt hơn.
+Generic Types là việc cho phép truyền type vào components, function hay interface, ... một cách linh động. Nếu trước đây bạn phải sử dụng Function Overloading để viết thư viện thì giờ bạn có thể sử dụng Generic Types vì nó sẽ giúp bạn tiết kiệm được các dòng code.
+
+Bạn hiểu nôm na là khi bạn sử dụng Generic Types, khi invoke function, bạn truyền gì vào function thì nó sẽ tự định dạng type cho cái đó
 
 ### Tại sao lại cần Generic?
 
@@ -901,9 +903,9 @@ function getTuple<T>(a: T, b: T): [T, T] {
   return [a, b];
 }
 
-let stringArray = getTuple<string>("hello", "world");
+let stringArray = getTuple("hello", "world");
 
-let numberArray = getTuple<number>(1.25, 2.56);
+let numberArray = getTuple(1.25, 2.56);
 
 let ucStrings = stringArray.map((s) => s.toUpperCase());
 
@@ -912,3 +914,50 @@ let numInts = numberArray.map((n) => n.toFixed());
 // Error: Argument of type '"world"' is not assignable to parameter of type 'number'.
 let mixedArray = getTuple(1.25, "world");
 ```
+
+Bây giờ mình sẽ làm một bài toán sort các môn học theo độ khó của nó sử dụng Generic Types
+
+Đầu tiên, phải có các môn học đã nhể:
+
+```ts
+const subjects: {
+  name: string;
+  difficulty: number;
+}[] = [
+  {
+    name: "ReactJS",
+    difficulty: 60,
+  },
+  {
+    name: "Angular",
+    difficulty: 90,
+  },
+  {
+    name: "VueJS",
+    difficulty: 70,
+  },
+];
+```
+
+Bạn có thể thấy các object đang được sắp xếp không theo thứ tự nào hết, bây giờ mình sẽ bắt đầu viết function nha
+
+```ts
+function ranker<RankItem>(
+  // Là một mảng có Generic Types là RankItem (các bạn có thể đặt ngắn gọn hơn là R)
+  items: RankItem[],
+  // Là một callback để thực hiện chức năng trả về giá trị number của difficulty
+  rankCallBack: (v: RankItem) => number
+): RankItem[] {
+  const ranks: {
+    item: RankItem;
+    rank: number;
+  }[] = items.map((item) => ({
+    item: item,
+    rank: rankCallBack(item),
+  }));
+  ranks.sort((a, b) => a.rank - b.rank);
+  return ranks.map((rank) => rank.item);
+}
+```
+
+Hmm
