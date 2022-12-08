@@ -948,16 +948,85 @@ function ranker<RankItem>(
   // Là một callback để thực hiện chức năng trả về giá trị number của difficulty
   rankCallBack: (v: RankItem) => number
 ): RankItem[] {
+  // Tạo ra một biến ranks lưu trữ giá trị của các thứ được truyền vào
   const ranks: {
+    // Trả về Generic Types
     item: RankItem;
+    // Trả về number (từ difficulty truyền vào)
     rank: number;
+    // Lưu vào một array chứa các object
   }[] = items.map((item) => ({
+    // Lưu trữ giá trị item truyền vào
     item: item,
     rank: rankCallBack(item),
   }));
+  // Sắp xếp theo rank (rank ở đây là từ difficulty truyền vào á)
+  ranks.sort((a, b) => a.rank - b.rank);
+  // Trả về một mảng đã được sorted
+  return ranks.map((rank) => rank.item);
+}
+```
+
+Hmm, mình sẽ viết một interface là `IRank` để chứa Object type của biến `ranks` nhé
+
+```ts
+interface IRank<RankItem> {
+  item: RankItem;
+  rank: number;
+}
+```
+
+Sau đó thay vào `type` hiện tại của biến `ranks`
+
+```ts
+function ranker<RankItem>(
+  items: RankItem[],
+  rankCallBack: (v: RankItem) => number
+): RankItem[] {
+  // Thay vô đây
+  const ranks: IRank<RankItem>[] = items.map((item) => ({
+    item: item,
+    rank: rankCallBack(item),
+  }));
+  //
+
   ranks.sort((a, b) => a.rank - b.rank);
   return ranks.map((rank) => rank.item);
 }
 ```
 
-Hmm
+# keyof trong Generic Types
+
+Trong Javascript Object, có hai khái niệm đó chính là `key` and `value`, ví dụ:
+
+```ts
+const student = {
+  name: "Khoi",
+  age: 19,
+};
+```
+
+Thì ở đây key lần lượt là `name` và `age`, còn value lần lượt là `Khoi` và `19`. Nếu các bạn đã hiểu cái này thì việc giải thích keyof cũng khá dễ dàng thôi
+
+keyof được hiểu nôm na là key của 1 object mà bạn truyền vào thôi, như ví dụ ở trên thì keyof `student` chính là `name` và `age`
+
+! Làm ví dụ về một function truyền vào keyof
+
+```ts
+const devices = [
+  {
+    name: "Iphone",
+    price: 1000,
+  },
+  {
+    name: "Ipad",
+    price: 2000,
+  },
+  {
+    name: "Macbook",
+    price: 3000,
+  },
+];
+
+function getDevicesKey<A, B extends keyof A>(items: A[], key: B): A[B][] {}
+```

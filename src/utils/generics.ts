@@ -23,10 +23,7 @@ function ranker<RankItem>(
   items: RankItem[],
   rankCallBack: (v: RankItem) => number
 ): RankItem[] {
-  const ranks: {
-    item: RankItem;
-    rank: number;
-  }[] = items.map((item) => ({
+  const ranks: IRank<RankItem>[] = items.map((item) => ({
     item: item,
     rank: rankCallBack(item),
   }));
@@ -55,3 +52,8 @@ const languages: {
 ];
 
 console.log(ranker(languages, ({ difficulty }) => difficulty));
+
+// Keyof: Trả về các key của mảng hoặc object
+// Ví dụ khi bạn sử dụng thư viện của thg nào đó phát triển
+// Nó có một cái input, và có thể truyền vào type và các bạn chỉ được phép sử dụng các
+// type như text, email, datetime, ... khi gõ vào các cái khác thì nó bị lỗi
