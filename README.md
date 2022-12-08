@@ -1010,7 +1010,7 @@ Thì ở đây key lần lượt là `name` và `age`, còn value lần lượt 
 
 keyof được hiểu nôm na là key của 1 object mà bạn truyền vào thôi, như ví dụ ở trên thì keyof `student` chính là `name` và `age`
 
-! Làm ví dụ về một function truyền vào keyof
+! Làm ví dụ về một function truyền vào keyof, giari thích giá trị hàm trả về
 
 ```ts
 const devices = [
@@ -1027,6 +1027,28 @@ const devices = [
     price: 3000,
   },
 ];
-
-function getDevicesKey<A, B extends keyof A>(items: A[], key: B): A[B][] {}
+// Truyền vào A(type là array), A ở đây đang truyền vào devices, B là key của các object nằm bên trong mảng A
+// Function lấy ra value của các key nằm bên trong object của mảng devices
+function getDevicesKey<A, B extends keyof A>(items: A[], key: B): A[B][] {
+  // Hiểu nôm na là map ra rồi trả về item.key
+  return items.map((item) => item[key]);
+}
+// Truyền vào mảng và tên key
+console.log(getDevicesKey(devices, "name"));
 ```
+
+Có thể các bạn thấy function đang trả về `A[B][]`, và các bạn thắc mắc, không hiểu cái đó có nghĩa là gì, thế thì xin mời học lại Object, bởi vì `A[B]` có nghĩa là `A.B`, nhưng Typescript không cho phép ta làm như vậy, để hiểu rõ hơn thì:
+
+```ts
+const student = {
+  name: "Khoi",
+  age: 19,
+};
+
+console.log(student.name);
+// Output: Khoi
+console.log(student[name]);
+// Output: Khoi
+```
+
+Đó 2 output đều giống nhau, đó là 2 cách để lấy `value` của một `key` nằm trong object `student`, nhưng với Typescript thì ta nên sử dụng `student[name]` khi làm việc với Generic Types
