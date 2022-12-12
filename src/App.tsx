@@ -4,6 +4,11 @@ import ReminderList from "./components/ReminderList";
 import reminderService from "./services/reminder";
 function App() {
   const [reminders, setReminders] = useState<Reminder[]>([]);
+  const handleDeleteToDos = (id: number): void => {
+    const newReminders = reminders.filter((item) => item.id !== id);
+    setReminders(newReminders);
+  };
+
   useEffect(() => {
     async function loadReminders() {
       const reminders = await reminderService.getReminders();
@@ -13,7 +18,10 @@ function App() {
   }, []);
   return (
     <>
-      <ReminderList items={reminders}></ReminderList>
+      <ReminderList
+        items={reminders}
+        onRemoveReminder={handleDeleteToDos}
+      ></ReminderList>
     </>
   );
 }
