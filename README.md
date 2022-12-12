@@ -436,7 +436,7 @@ export function total(a: number, b: number): void {
 
 ### Unknown
 
-- Đúng như tên gọi của nó, `unknown` dược sử dụng khi `ta không biết kiểu dữ liệu của giá trị đó là gì`. Những giá trị đó có thể tới từ user, hoặc có thể chúng ta muốn chấp nhận mọi values trong API của chúng ta. Và trong trường hợp này thì ta sẽ muốn sử dụng `unknonw` cho những giá trị đó để bảo với `compiler` rằng, những giá trị này có thể là bất kì thứ gì.
+- Đúng như tên gọi của nó, `unknown` dược sử dụng khi `ta không biết kiểu dữ liệu của giá trị đó là gì`. Và trong trường hợp này thì ta sẽ muốn sử dụng `unknown` cho những giá trị đó để bảo với `compiler` rằng, những giá trị này có thể là bất kì thứ gì.
 
 ```ts
 let notSure: unknown = 4;
@@ -449,25 +449,16 @@ notSure = false;
 - Nếu bạn sử dụng `unknown`, bạn có thể `thu hẹp phạm vi của nó lại` bằng cách kiểm tra type của nó để biết rằng giá trị của nó đang nắm giữ là thuộc kiểu dữ liệu nào.
 
 ```ts
-declare const maybe: unknown;
-// 'maybe' could be a string, object, boolean, undefined, or other types
-const aNumber: number = maybe;
-// Type 'unknown' is not assignable to type 'number'.
-
-if (maybe === true) {
-  // TypeScript knows that maybe is a boolean now
-  const aBoolean: boolean = maybe;
-  // So, it cannot be a string
-  const aString: string = maybe;
-Type 'boolean' is not assignable to type 'string'.
-}
-
-if (typeof maybe === "string") {
-  // TypeScript knows that maybe is a string
-  const aString: string = maybe;
-  // So, it cannot be a boolean
-  const aBoolean: boolean = maybe;
-Type 'string' is not assignable to type 'boolean'.
+function render(document: unknown) {
+  // We have to narrow down to a specific
+  // type before we can perform any operations
+  // on an unknown type.
+  if (typeof document === "string") {
+    document.toLowerCase();
+  }
+  if (typeof document === number) {
+    document.toFixed();
+  }
 }
 ```
 
@@ -1033,7 +1024,7 @@ function getDevicesKey<A, B extends keyof A>(items: A[], key: B): A[B][] {
   // Hiểu nôm na là map ra rồi trả về item.key
   return items.map((item) => item[key]);
 }
-// Truyền vào mảng và tên key
+// Truyền vào mảng và tên key, nếu key mà không giống bất kì cái nào nằm trong object thì lỗi chương trình
 console.log(getDevicesKey(devices, "name"));
 ```
 
