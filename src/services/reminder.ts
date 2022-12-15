@@ -7,6 +7,7 @@ class ReminderService {
   });
   async getReminders() {
     const response = await this.http.get<Reminder[]>("/todos");
+    console.log(response.data);
     return response.data;
   }
 

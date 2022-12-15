@@ -25,12 +25,4 @@ function App() {
     </>
   );
 }
-
-function displayReview(
-  totalReviews: number,
-  name: string,
-  premiumUser: boolean
-) {
-  return <></>;
-}
 export default App;

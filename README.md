@@ -1043,3 +1043,102 @@ console.log(student[name]);
 ```
 
 Đó 2 output đều giống nhau, đó là 2 cách để lấy `value` của một `key` nằm trong object `student`, nhưng với Typescript thì ta nên sử dụng `student[name]` khi làm việc với Generic Types
+
+## Utility Types
+
+#### Partial
+
+`Partial` khiến cho các key của nó trở thành optional khi sử dụng, ví dụ:
+
+```ts
+interface Point {
+  x: number;
+  y: number;
+}
+
+let pointPart: Partial<Point> = {}; // `Partial` allows x and y to be optional
+pointPart.x = 10;
+```
+
+#### Required
+
+Ngược lại với `Partial`, thì `Required` khiến cho tất cả các key trong object cần phải được sử dụng, ví dụ:
+
+```ts
+interface Car {
+  make: string;
+  model: string;
+  mileage?: number;
+}
+
+let myCar: Required<Car> = {
+  make: "Ford",
+  model: "Focus",
+  mileage: 12000,
+  // `Required` forces mileage to be defined
+};
+```
+
+#### Record
+
+`Record` là một đường tắt để khai báo một object và định nghĩa sẵn type của key và value cho object đó, ví dụ:
+
+```ts
+const nameAgeMap: Record<string, number> = {
+  // string:number
+  Alice: 21,
+  Bob: 25,
+};
+```
+
+Thêm 1 ví dụ nữa:
+
+```ts
+const requirement: Record<string, boolean> = {
+  // string:boolean
+  learnedJavascript: true,
+  learnedReactJS: true,
+};
+```
+
+#### Omit
+
+`Omit` được dùng để xóa key ra khỏi một object type
+
+```ts
+interface Person {
+  name: string;
+  age: number;
+  location?: string;
+}
+
+const Khoi: Omit<Person, "age" | "location"> = {
+  name: "Khoi",
+  // `Omit` đã xóa đi 2 properties là age và location
+};
+```
+
+#### Pick
+
+Cũng để xóa bỏ keys giống `Omit`, nhưng thay vì truyền vào những key muốn xóa, thì ta truyền vào key muốn giữ lại
+
+```ts
+interface Person {
+  name: string;
+  age: number;
+  location?: string;
+}
+
+const Khoi: Pick<Person, "name"> = {
+  name: "Khoi",
+  // `Pick` giữ lại name và xóa bỏ hoàn toàn age và location
+};
+```
+
+#### Exclude
+
+Xóa bỏ các types khỏi một union
+
+```ts
+
+```
