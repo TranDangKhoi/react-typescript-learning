@@ -1046,7 +1046,7 @@ console.log(student[name]);
 
 ## Utility Types
 
-#### Partial
+#### Partial<Type>
 
 `Partial` khiến cho các key của nó trở thành optional khi sử dụng, ví dụ:
 
@@ -1060,7 +1060,7 @@ let pointPart: Partial<Point> = {}; // `Partial` allows x and y to be optional
 pointPart.x = 10;
 ```
 
-#### Required
+#### Required<Type>
 
 Ngược lại với `Partial`, thì `Required` khiến cho tất cả các key trong object cần phải được sử dụng, ví dụ:
 
@@ -1079,7 +1079,28 @@ let myCar: Required<Car> = {
 };
 ```
 
-#### Record
+#### Readonly<Type>
+
+`Readonly` khiến cho tất cả các key trong object đó ở dưới dạng read-only, không thể thay đổi được, chỉ đọc được dữ liệu thôi
+
+```ts
+interface yourInformation {
+  name: string;
+  age: number;
+  isSophomore: boolean;
+}
+
+const khoiInformation: Readonly<yourInformation> = {
+  name: "Khoi",
+  age: 20,
+  isSophomore: true,
+};
+
+// Cannot assign to 'name' because it is a read-only property.
+khoiInformation.name = "Someone else";
+```
+
+#### Record<Key, Type>
 
 `Record` là một đường tắt để khai báo một object và định nghĩa sẵn type của key và value cho object đó, ví dụ:
 
@@ -1101,7 +1122,34 @@ const requirement: Record<string, boolean> = {
 };
 ```
 
-#### Omit
+Và một cái nữa:
+
+```ts
+interface catInfo {
+  breed: string;
+  age: number;
+}
+
+type catNames = "Cup" | "Puff" | "Tom";
+
+// catNames: object{breed,age}
+const cats: Record<catNames, catInfo> = {
+  Cup: {
+    breed: "Persian",
+    age: 2,
+  },
+  Puff: {
+    breed: "Maine Coon",
+    age: 1,
+  },
+  Tom: {
+    breed: "Shortleg",
+    age: 1,
+  },
+};
+```
+
+#### Omit<Type,Key>
 
 `Omit` được dùng để xóa key ra khỏi một object type
 
@@ -1118,9 +1166,9 @@ const Khoi: Omit<Person, "age" | "location"> = {
 };
 ```
 
-#### Pick
+#### Pick<Type, Key>
 
-Cũng để xóa bỏ keys giống `Omit`, nhưng thay vì truyền vào những key muốn xóa, thì ta truyền vào key muốn giữ lại
+`Pick `cũng để xóa bỏ keys giống `Omit`, nhưng thay vì truyền vào những key muốn xóa, thì ta truyền vào key muốn giữ lại
 
 ```ts
 interface Person {
@@ -1135,10 +1183,36 @@ const Khoi: Pick<Person, "name"> = {
 };
 ```
 
-#### Exclude
+#### Exclude<UnionType, ExcludedMembers>
 
-Xóa bỏ các types khỏi một union
+`Exclude` có chức năng xóa bỏ các types bạn muốn khỏi một union
 
 ```ts
+type boyNames = Exclude<"Khoi" | "Hoang" | "Bao", "Hoang">;
 
+const boys: Record<boyNames, string> = {
+  Khoi: "handsome",
+  Bao: "ugly",
+
+  // Object literal may only specify known properties, and 'Hoang' does not exist in type 'Record<humanNames, string>'.
+  Hoang: "handsome",
+};
 ```
+
+Hay một ví dụ ngắn hơn:
+
+```ts
+type T2 = Exclude<string | number | (() => void), Function>;
+// type T2 = string | number
+```
+
+#### NonNullable<Type>
+
+Xóa các kiểu dữ liệu null hoặc undefined ra khỏi Type
+
+```ts
+type NullExcluded = NonNullable<string | number[] | null | undefined>;
+// type NullExcluded = string | number[]
+```
+
+Ngoài ra còn rất nhiều nữa... nhưng thui, nói 1 số cái tiêu biểu thui
