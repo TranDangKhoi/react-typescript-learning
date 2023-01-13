@@ -26,6 +26,7 @@ const obj = {
 
 function getDevicesKey<A, B extends keyof A>(items: A[], key: B): A[B][] {
   // Hiểu nôm na là map ra rồi trả về item.key
+  // item.key là giá trị của key mình truyền vào ở phần đối số bên dưới
   return items.map((item) => item[key]);
 }
 
@@ -35,3 +36,9 @@ console.log(getDevicesKey(devices, "name"));
 // ["Iphone", "Ipad", "Macbook"]
 // key mà là price, thì in mảng chứa price
 // [1000,2000,3000]
+
+type Mark = {
+  mark: number;
+};
+
+type P = keyof Mark;

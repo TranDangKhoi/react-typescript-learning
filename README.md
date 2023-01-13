@@ -1001,7 +1001,7 @@ Thì ở đây key lần lượt là `name` và `age`, còn value lần lượt 
 
 keyof được hiểu nôm na là key của 1 object mà bạn truyền vào thôi, như ví dụ ở trên thì keyof `student` chính là `name` và `age`
 
-! Làm ví dụ về một function truyền vào keyof, giari thích giá trị hàm trả về
+Cùng mình làm ví dụ về một function truyền vào keyof và giải thích giá trị hàm trả về
 
 ```ts
 const devices = [
@@ -1022,10 +1022,16 @@ const devices = [
 // Function lấy ra value của các key nằm bên trong object của mảng devices
 function getDevicesKey<A, B extends keyof A>(items: A[], key: B): A[B][] {
   // Hiểu nôm na là map ra rồi trả về item.key
+  // item.key là giá trị của key mình truyền vào ở phần đối số bên dưới
   return items.map((item) => item[key]);
 }
 // Truyền vào mảng và tên key, nếu key mà không giống bất kì cái nào nằm trong object thì lỗi chương trình
 console.log(getDevicesKey(devices, "name"));
+
+// key mà là name, thì in ra mảng chứa name
+// ["Iphone", "Ipad", "Macbook"]
+// key mà là price, thì in mảng chứa price
+// [1000,2000,3000]
 ```
 
 Có thể các bạn thấy function đang trả về `A[B][]`, và các bạn thắc mắc, không hiểu cái đó có nghĩa là gì, thế thì xin mời học lại Object, bởi vì `A[B]` có nghĩa là `A.B`, nhưng Typescript không cho phép ta làm như vậy, để hiểu rõ hơn thì:
@@ -1043,6 +1049,8 @@ console.log(student[name]);
 ```
 
 Đó 2 output đều giống nhau, đó là 2 cách để lấy `value` của một `key` nằm trong object `student`, nhưng với Typescript thì ta nên sử dụng `student[name]` khi làm việc với Generic Types
+
+Ngoài ra thì keyof cũng rất có ích khi ta làm việc với Mapped Types, sau này ta sẽ học tới
 
 ## Utility Types
 
@@ -1216,3 +1224,180 @@ type NullExcluded = NonNullable<string | number[] | null | undefined>;
 ```
 
 Ngoài ra còn rất nhiều nữa... nhưng thui, nói 1 số cái tiêu biểu thui
+
+# Mapped Types
+
+Khi lập trình, ta có một luật lệ là DRY (Don't Repeat Yourself) tức là không nên code lặp lại một cái quá nhiều lần. Và Mapped Types trong Typescript chính là 1 yếu tố quan trọng để giúp ta
+
+## VD1 - cơ bản nhất, dễ hiểu nhất:
+
+```ts
+type Developer = {
+  name: string;
+  // Rest field sẽ có key là kiểu string và value là string hoặc number
+  [key: string]: string | number;
+};
+
+const Tofu: Developer = {
+  name: "Tran dang Khoi",
+  age: 20,
+  gender: "male",
+  school: "FPT Aptech",
+};
+```
+
+Ở bên trên, ta chỉ cần khai báo `[key: string]: string | number;` thì các fields của object còn lại sẽ tự đi theo cái format đó luôn
+
+### VD2 - Bắt đầu củ chuối:
+
+```ts
+type OptionsFlags<Type> = {
+  [Property in keyof Type]: boolean;
+};
+// Type ["darkMode", "newUserProfile"]
+// Property: darkMode: void, newUserProfile: void
+type FeatureFlags = {
+  darkMode: () => void;
+  newUserProfile: () => void;
+};
+
+// Map tất cả các type nằm trong Feature Flags sang kiểu boolean
+type FeatureOptions = OptionsFlags<FeatureFlags>;
+// Property: darkMode: boolean, newUserProfile: boolean
+```
+
+# Mapping Modifiers
+
+Trong Typescript ta có thể sử dụng các tiền tố là `-` và `+` để thay đổi các tính chất về `mutability` và `optionality`
+
+Vậy mutability và optionality là gì ??
+
+- mutability: khả năng biến đổi (read-only, read-write)
+- optionality: quyền lựa chọn (optional or required)
+
+Nói vậy thì có vẻ vẫn hơi khó hiểu, chúng ta sẽ cùng làm một ví dụ về nó nhé:
+
+Mình sẽ tạo ra một type chứa các giá trị read-only
+
+```ts
+type LockedAccount = {
+  readonly id: string;
+  readonly name: string;
+};
+```
+
+Sau khi tạo xong, mình sẽ tạo thêm 1 object với cái type `LockedAccount` mình vừa tạo đó
+
+```ts
+type LockedAccount = {
+  readonly id: string;
+  readonly name: string;
+};
+
+const lockedUser: LockedAccount = {
+  id: "fBa9144fS",
+  name: "Khoi",
+};
+```
+
+Sau khi tạo xong object lockedUser như trên, mình sẽ thử thay đổi các giá trị bên trong object đó nhé
+
+```ts
+type LockedAccount = {
+  readonly id: string;
+  readonly name: string;
+};
+
+const lockedUser: LockedAccount = {
+  id: "fBa9144fS",
+  name: "Khoi",
+};
+
+// Cannot assign to 'name' because it is a read-only property.
+lockedUser.name = "Tofu";
+```
+
+Như các bạn thấy thì hiện tại, do property name đang ở chế độ readonly, nên mình không thể mutate (thay đổi) giá trị của nó được, và đồng nghĩa với id cũng vậy vì nó cũng có readonly đứng trước
+
+Giờ mình sẽ tiến hành sử dụng Mapped Types để tạo ra một Type khác nhưng mình sẽ thêm prefix (tiền tố) đứng trước nó, đó chính là một cái dấu trừ (-)
+
+```ts
+type LockedAccount = {
+  readonly id: string;
+  readonly name: string;
+};
+
+const lockedUser: LockedAccount = {
+  id: "fBa9144fS",
+  name: "Khoi",
+};
+
+// Cannot assign to 'name' because it is a read-only property.
+lockedUser.name = "Tofu";
+
+//Đoạn code mới ở đây
+
+// Xóa readonly ra khỏi các Property bên trong Type bằng prefix (-)
+type CreateMutable<Type> = {
+  -readonly [Property in keyof Type]: Type[Property];
+};
+```
+
+Giờ mình sẽ tiến hành tạo một Type mới dựa trên type CreateMutable mình vừa tạo
+
+```ts
+type LockedAccount = {
+  readonly id: string;
+  readonly name: string;
+};
+
+const lockedUser: LockedAccount = {
+  id: "fBa9144fS",
+  name: "Khoi",
+};
+
+// Cannot assign to 'name' because it is a read-only property.
+lockedUser.name = "Tofu";
+
+// Xóa readonly ra khỏi các Property bên trong Type bằng prefix (-)
+type CreateMutable<Type> = {
+  -readonly [Property in keyof Type]: Type[Property];
+};
+
+//Đoạn code mới ở đây
+type UnlockedAccount = CreateMutable<LockedAccount>;
+```
+
+Sau khi sử dụng prefix(-) để loại bỏ tính chất readonly của các type rồi, thì ta bắt đầu sử dụng thử nó thôi
+
+```ts
+type LockedAccount = {
+  readonly id: string;
+  readonly name: string;
+};
+
+const lockedUser: LockedAccount = {
+  id: "fBa9144fS",
+  name: "Khoi",
+};
+
+// Cannot assign to 'name' because it is a read-only property.
+lockedUser.name = "Tofu";
+
+// Xóa readonly ra khỏi các Property bên trong Type bằng prefix (-)
+type CreateMutable<Type> = {
+  -readonly [Property in keyof Type]: Type[Property];
+};
+
+type UnlockedAccount = CreateMutable<LockedAccount>;
+
+//Đoạn code mới ở đây
+const unlockedUser: UnlockedAccount = {
+  id: "fjskf1",
+  name: "Khoi",
+};
+
+unlockedUser.name = "Tofu";
+```
+
+Đó như các bạn thấy, mình đã có thể thay đổi được `name` mà không gặp bất kì lỗi nào cả. RẤT TUYỆT
