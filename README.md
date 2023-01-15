@@ -1435,7 +1435,17 @@ Còn đối với optionality(?) thì ta cũng chỉ việc đặt dấu trừ (
 // Concrete: cụ thể hóa - bê tông
 
 // Mình cũng không hiểu sao doc của Typescript lại đặt cái tên như này nữa, chắc phải >9.0 IELTs mới hiểu được
+
+// Tạo ra một type, và bạn có thể thấy các properties bên trong type này đang là optional do có dấu ?
 type Concrete<Type> = {
   [Property in keyof Type]?: Type[Property];
 };
+
+// Tạo ra một type, type này chính là type mà ta chuẩn bị dùng để map cái type Concrete bên trên đang có dấu ? thành mất đi dấu ?
+type DeleteOptional<Type> = {
+  [Property in keyof Type]-?: Type[Property];
+};
+
+// BÙM, thế là mất dấu ?
+type DeletedOptionalType = DeleteOptional<Concrete>;
 ```
