@@ -71,15 +71,15 @@ const cats: Record<catNames, catInfo> = {
 };
 
 // Omit
-interface Person {
-  name: string;
-  age: number;
-  location?: string;
-}
+// interface Person {
+//   name: string;
+//   age: number;
+//   location?: string;
+// }
 
-const Khoi: Omit<Person, "name" | "age"> = {
-  location: "Kim Nguu",
-};
+// const Khoi: Omit<Person, "name" | "age"> = {
+//   location: "Kim Nguu",
+// };
 
 // Exclude
 

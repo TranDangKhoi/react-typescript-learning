@@ -56,3 +56,62 @@ const lockedUser: LockedAccount = {
 };
 // Cannot assign to 'name' because it is a read-only property.
 // lockedUser.name = "Daddy";
+
+// Key Mapping with as
+type Getters<Type> = {
+  [Property in keyof Type as `get${Capitalize<
+    string & Property
+  >}`]: () => Type[Property];
+};
+
+interface Person {
+  name: string;
+  age: number;
+  accomodation: string;
+}
+
+type LazyPerson = Getters<Person>;
+
+const testPerson: LazyPerson = {
+  getName: () => "Khoi",
+  getAge: () => 20,
+  getAccomodation: () => "Hanoi",
+};
+
+type RemoveKind<T> = {
+  // T ở đây chính là interface Square
+  // P là các key nằm trong interface Square
+  [P in keyof T as Exclude<P, "kind">]: T[P];
+};
+
+interface Square {
+  kind: string;
+  edge: number;
+}
+
+const mySquare: RemoveKind<Square> = {
+  edge: 5,
+};
+
+// Map over arbitrary unions
+
+// Tạo ra một type EventConfig và extends (mở rộng) thêm một cái field nữa nằm trong đó
+// Field đó là kind và có kiểu dữ liệu là string
+type EventConfig<Events extends { kind: string }> = {
+  // Bất kì cái nào sử dụng cái type này thì sẽ có các functions truyền vào toàn bộ các Events
+  // Vì type EventConfig này đang có 1 type Events extends thêm kind: string; nên phải có thêm as E["kind"]
+  [E in Events as E["kind"]]: (event: E) => void;
+};
+
+type SquareEvent = { kind: "square"; x: number; y: number };
+type CircleEvent = { kind: "circle"; radius: number };
+
+type Config = EventConfig<SquareEvent | CircleEvent>;
+
+// Conditional Types
+
+// condition ? true : condition2 ? true : condition3 ? true : condition4 ? true : false
+
+type someType<T> = T extends string ? string : boolean;
+type MetCondition = someType<string>; // string
+type NonMetCondition = someType<number>; // boolean

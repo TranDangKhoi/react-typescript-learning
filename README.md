@@ -1401,3 +1401,14 @@ unlockedUser.name = "Tofu";
 ```
 
 Đó như các bạn thấy, mình đã có thể thay đổi được `name` mà không gặp bất kì lỗi nào cả. RẤT TUYỆT
+
+Còn đối với optionality(?) thì ta cũng chỉ việc đặt dấu trừ (-) ra đằng trước dấu hỏi chấm (?) thì sẽ loại bỏ được nó thui, ví dụ:
+
+```ts
+// Concrete: cụ thể hóa - bê tông
+
+// Mình cũng không hiểu sao doc của Typescript lại đặt cái tên như này nữa, chắc phải >9.0 IELTs mới hiểu được
+type Concrete<Type> = {
+  [Property in keyof Type]?: Type[Property];
+};
+```
