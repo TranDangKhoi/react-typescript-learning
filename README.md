@@ -1238,15 +1238,16 @@ Nếu bạn nào đã học Javascript thì sẽ có một function của `Array
 ## VD1 - cơ bản nhất, dễ hiểu nhất:
 
 ```ts
+// Tạo ra một type có 2 properties là username và layout
 type AppConfig = {
   username: string;
   layout: string;
 };
 
+// Tạo ra một type tên là Username, và giá trị của nó sẽ từ AppConfig map sang, và ở đây type của AppConfig["username"] chính là string => type Username = string
 type Username = AppConfig["username"];
+// type Username = string
 ```
-
-Ở bên trên, ta chỉ cần khai báo `[key: string]: string | number;` thì các fields của object còn lại sẽ tự đi theo cái format đó luôn
 
 ### VD2 - Bắt đầu củ chuối:
 
