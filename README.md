@@ -1229,7 +1229,53 @@ Ngoài ra còn rất nhiều nữa... nhưng thui, nói 1 số cái tiêu biểu
 
 Khi lập trình, ta có một luật lệ là DRY (Don't Repeat Yourself) tức là không nên code lặp lại một cái quá nhiều lần. Và Mapped Types trong Typescript chính là 1 yếu tố quan trọng để giúp ta
 
+Mapped Types về cơ bản là để thay đổi một type đang có sẵn ra thành một type khác do mình tùy chỉnh
+
+Giống như việc bạn copy paste code trên StackOverFlow, code của người ta bạn paste vào y hệt và chỉ tùy chỉnh một chút đoạn code đó theo ý mình
+
+Nếu bạn nào đã học Javascript thì sẽ có một function của `Array`, đó chính là `.map()` dùng để tùy chỉnh các giá trị bên trong mảng theo ý mình. Đối với `Mapped Type` cũng vậy, ta có sẵn một `Type` và ta sẽ tùy chỉnh nó theo ý mình
+
 ## VD1 - cơ bản nhất, dễ hiểu nhất:
+
+```ts
+type AppConfig = {
+  username: string;
+  layout: string;
+};
+
+type Username = AppConfig["username"];
+```
+
+Ở bên trên, ta chỉ cần khai báo `[key: string]: string | number;` thì các fields của object còn lại sẽ tự đi theo cái format đó luôn
+
+### VD2 - Bắt đầu củ chuối:
+
+```ts
+// Các bạn cứ hiểu đây là một cái Middleware, được sử dụng để tùy chỉnh lại tất cả các properties bên trong 1 type thành giá trị boolean
+type OptionsFlags<Type> = {
+  [Property in keyof Type]: boolean;
+};
+
+// Ban đầu FeatureFlags đang ở dạng như này, giờ hãy sử dụng mapped type để tùy chỉnh lại làm cho các function trả về void bên trong trở thành boolean
+type FeatureFlags = {
+  darkMode: () => void;
+  newUserProfile: () => void;
+};
+
+// Map tất cả các property nằm trong type Feature Flags thành 1 giá trị boolean thay vì 1 function trả về void
+type FeatureOptions = OptionsFlags<FeatureFlags>;
+
+/*
+Sau khi FeatureFlags đã được map thành FeatureOptions:
+
+type FeatureOptions = {
+    darkMode: boolean;
+    newUserProfile: boolean;
+}
+*/
+```
+
+### VD3: Index Signature
 
 ```ts
 type Developer = {
@@ -1244,26 +1290,6 @@ const Tofu: Developer = {
   gender: "male",
   school: "FPT Aptech",
 };
-```
-
-Ở bên trên, ta chỉ cần khai báo `[key: string]: string | number;` thì các fields của object còn lại sẽ tự đi theo cái format đó luôn
-
-### VD2 - Bắt đầu củ chuối:
-
-```ts
-type OptionsFlags<Type> = {
-  [Property in keyof Type]: boolean;
-};
-// Type ["darkMode", "newUserProfile"]
-// Property: darkMode: void, newUserProfile: void
-type FeatureFlags = {
-  darkMode: () => void;
-  newUserProfile: () => void;
-};
-
-// Map tất cả các type nằm trong Feature Flags sang kiểu boolean
-type FeatureOptions = OptionsFlags<FeatureFlags>;
-// Property: darkMode: boolean, newUserProfile: boolean
 ```
 
 # Mapping Modifiers
