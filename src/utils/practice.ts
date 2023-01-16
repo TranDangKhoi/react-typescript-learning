@@ -13,3 +13,13 @@ function isRect(shape: Shape): shape is Rect {
 const myShapes: Rect[] = [{ kind: "rect", width: 10, height: 20 }];
 
 const rects = myShapes.filter(isRect);
+
+// Keyword
+
+function log(obj: { name: string } | { age: number }) {
+  if ("name" in obj) {
+    console.log(obj.name);
+  } else if ("age" in obj){
+    console.log(obj.age)
+  }
+}

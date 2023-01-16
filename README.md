@@ -497,118 +497,118 @@ let loop = function forever() {
 
 ### Interface
 
-- `Interface` cho phép bạn định nghĩ thuộc tính là gì và phương thức là gì mà đối tượng cần để được thực thi `(implement)`. Nếu đối tượng tuân thủ đúng khuôn mẫu `Interface` thì đối tượng đã `implement` `Interface` ấy sẽ được thi hành đúng. Nếu không thì sẽ phát sinh lỗi ngay lập tức. Những khái niệm như `Interface` hay `Abstract`, những người hay code `Java` thường sẽ `rất dễ hiểu`
+`Interface` cho phép bạn định nghĩ thuộc tính là gì và phương thức là gì mà đối tượng cần để được thực thi `(implement)`. Nếu đối tượng tuân thủ đúng khuôn mẫu `Interface` thì đối tượng đã `implement` `Interface` ấy sẽ được thi hành đúng. Nếu không thì sẽ phát sinh lỗi ngay lập tức. Những khái niệm như `Interface` hay `Abstract`, những người hay code `Java` thường sẽ `rất dễ hiểu`
 
-- Nói khái niệm thì có vẻ hơi khó hiểu nên cùng làm ví dụ nhóe:
+Nói khái niệm thì có vẻ hơi khó hiểu nên cùng làm ví dụ nhóe:
 
-  - Bắt đầu với việc mình sẽ tạo ra một bài tập nhỏ, đó chính là tạo ra thông tin chi tiết của một ô tô và `add nó vào` một `array object`, thông thường nếu chưa học tới `Interface` bạn sẽ tạo và sử dụng nó như sau
+- Bắt đầu với việc mình sẽ tạo ra một bài tập nhỏ, đó chính là tạo ra thông tin chi tiết của một ô tô và `add nó vào` một `array object`, thông thường nếu chưa học tới `Interface` bạn sẽ tạo và sử dụng nó như sau
 
-  ```ts
-  const car: {
-    brand: string;
-    color: string;
-    maxSpeed: string;
-    soldOut: boolean;
-  } = {
-    brand: "BMW",
-    color: "white",
-    maxSpeed: "300km/h",
-    soldOut: false,
-  };
+```ts
+const car: {
+  brand: string;
+  color: string;
+  maxSpeed: string;
+  soldOut: boolean;
+} = {
+  brand: "BMW",
+  color: "white",
+  maxSpeed: "300km/h",
+  soldOut: false,
+};
 
-  function addProduct(product: {
-    brand: string;
-    color: string;
-    maxSpeed: string;
-    soldOut: boolean;
-  }) {
-    // Code here
-  }
-  ```
+function addProduct(product: {
+  brand: string;
+  color: string;
+  maxSpeed: string;
+  soldOut: boolean;
+}) {
+  // Code here
+}
+```
 
-  - Các bạn có thể thấy, mình phải viết đi viết lại rất nhiều công đoạn khai báo tên key, kiểu dữ liệu của key rất nhiều lần. Nhưng chuỗi ngày đó rồi cũng chấm dứt khi bạn học tới `Interface` trong `Typescript`
+- Các bạn có thể thấy, mình phải viết đi viết lại rất nhiều công đoạn khai báo tên key, kiểu dữ liệu của key rất nhiều lần. Nhưng chuỗi ngày đó rồi cũng chấm dứt khi bạn học tới `Interface` trong `Typescript`
 
-  ```ts
-  // LƯU Ý: GIỐNG NHƯ TRONG C# NẾU MUỐN ĐẶT TÊN CHO INTERFACE THÌ PHẢI CÓ CHỮ I
-  interface ICar {
-    brand: string;
-    color: string;
-    maxSpeed: string;
-    soldOut: boolean;
-  }
+```ts
+// LƯU Ý: GIỐNG NHƯ TRONG C# NẾU MUỐN ĐẶT TÊN CHO INTERFACE THÌ PHẢI CÓ CHỮ I
+interface ICar {
+  brand: string;
+  color: string;
+  maxSpeed: string;
+  soldOut: boolean;
+}
 
-  const car: ICar = {
-    brand: "BMW",
-    color: "white",
-    maxSpeed: "300km/h",
-    soldOut: false,
-  };
+const car: ICar = {
+  brand: "BMW",
+  color: "white",
+  maxSpeed: "300km/h",
+  soldOut: false,
+};
 
-  function addProduct(product: ICar) {
-    // Code here
-  }
-  ```
+function addProduct(product: ICar) {
+  // Code here
+}
+```
 
-  - Đó chỉ cần viết `Interface` cho `Car` và thay đống object dài loằng ngoằng kia thành `ICar` là xong. Ta có thể sử dụng nó ở nhiều nơi bằng cách viết ra một file riêng rồi `export` ra:
+- Đó chỉ cần viết `Interface` cho `Car` và thay đống object dài loằng ngoằng kia thành `ICar` là xong. Ta có thể sử dụng nó ở nhiều nơi bằng cách viết ra một file riêng rồi `export` ra:
 
-  ```ts
-  export interface ICar {
-    brand: string;
-    color: string;
-    maxSpeed: string;
-    soldOut: boolean;
-  }
-  ```
+```ts
+export interface ICar {
+  brand: string;
+  color: string;
+  maxSpeed: string;
+  soldOut: boolean;
+}
+```
 
-  - Ngoài ra, còn một chức năng rất hay giống như `Java` nữa đó chính là `extends`, khi ta muốn mở rộng thêm các properties khác cho `ICar` nữa, thì ta có thể sử dụng `extends`, ví dụ ta tạo một `Interface` nữa tên là `ISportCar` sau đó `extends` nó từ thằng `ICar`:
+- Ngoài ra, còn một chức năng rất hay giống như `Java` nữa đó chính là `extends`, khi ta muốn mở rộng thêm các properties khác cho `ICar` nữa, thì ta có thể sử dụng `extends`, ví dụ ta tạo một `Interface` nữa tên là `ISportCar` sau đó `extends` nó từ thằng `ICar`:
 
-  ```ts
-  export interface ICar {
-    brand: string;
-    color: string;
-    maxSpeed: string;
-    soldOut: boolean;
-  }
+```ts
+export interface ICar {
+  brand: string;
+  color: string;
+  maxSpeed: string;
+  soldOut: boolean;
+}
 
-  export interface ISportCar extends ICar {
-    releaseDate: string;
-  }
-  ```
+export interface ISportCar extends ICar {
+  releaseDate: string;
+}
+```
 
-  - Chỉ cần bạn viết như này thì mặc định `ISportCar` sẽ chứa cả các properties của `ICar` nữa, chứ ta không nên copy các properties của Car qua SportCar
+- Chỉ cần bạn viết như này thì mặc định `ISportCar` sẽ chứa cả các properties của `ICar` nữa, chứ ta không nên copy các properties của Car qua SportCar
 
-  - Vậy sẽ có thêm câu hỏi là nếu mình `đặt 2 interface trùng tên nhau thì sao?` Thì `Typescript` nó sẽ hiểu 2 cái `Interfaces` đó là 1 và `Typescript` sẽ `merge` chúng nó vào với nhau
+- Vậy sẽ có thêm câu hỏi là nếu mình `đặt 2 interface trùng tên nhau thì sao?` Thì `Typescript` nó sẽ hiểu 2 cái `Interfaces` đó là 1 và `Typescript` sẽ `merge` chúng nó vào với nhau
 
-  ```ts
-  export interface ICar {
-    name: string;
-    brand: string;
-    color: string;
-  }
+```ts
+export interface ICar {
+  name: string;
+  brand: string;
+  color: string;
+}
 
-  export interface ICar {
-    speed: string;
-  }
-  ```
+export interface ICar {
+  speed: string;
+}
+```
 
-  - Đoạn code ở trên sẽ giống với như sau:
+- Đoạn code ở trên sẽ giống với như sau:
 
-  ```ts
-  export interface ICar {
-    name: string;
-    brand: string;
-    color: string;
-    speed: string;
-  }
-  ```
+```ts
+export interface ICar {
+  name: string;
+  brand: string;
+  color: string;
+  speed: string;
+}
+```
 
-  - Nhưng ta không nên làm như này, rất dễ bị loạn và không cần thiết, nếu thực sự cần `speed` nằm ở `ICar` thì ta nên sử dụng nó ngay lúc khởi tạo lần đầu luôn
+- Nhưng ta không nên làm như này, rất dễ bị loạn và không cần thiết, nếu thực sự cần `speed` nằm ở `ICar` thì ta nên sử dụng nó ngay lúc khởi tạo lần đầu luôn
 
-  - Hoặc ... ta có thể sử dụng `Intersection Type (&)`:
+- Hoặc ... ta có thể sử dụng `Intersection Type (&)`:
 
-  ```ts
-  export type IFinalCar = ICar & ISportCar;
-  ```
+```ts
+export type IFinalCar = ICar & ISportCar;
+```
 
 # Function overloading
 
@@ -1448,4 +1448,34 @@ type DeleteOptional<Type> = {
 
 // BÙM, thế là mất dấu ?
 type DeletedOptionalType = DeleteOptional<Concrete>;
+```
+
+# Các keyword cần hiểu trong Typescript
+
+`infer`: Được sử dụng trong các câu lệnh điều kiện bên trong Conditional Type, để xử lí điều kiện dựa theo generic type được truyền vào
+
+```ts
+// Truyền vào T - một generic type, check xem giá trị T được truyền vào có phải là một mảng không? nếu có thì lấy kiểu dữ liệu của mảng đó còn không thì lấy cái type được truyền vào
+type ArrayElementType<T> = T extends (infer E)[] ? E : T;
+
+// Kiểu dữ liệu của item1 là `number` vì ta truyền vào number[] => kiểu dữ liệu của mảng là number
+type item1 = ArrayElementType<number[]>;
+
+// Kiểu dữ liệu của item2 là `string`
+type item2 = ArrayElementType<string[]>;
+
+// Kiểu dữ liệu item3 là `{name: string}`
+type item3 = ArrayElementType<{ name: string }>;
+```
+
+`in`: Kiểm tra xem key/property đó có trong object hay không
+
+```ts
+function log(obj: { name: string } | { age: number }) {
+  if ("name" in obj) {
+    console.log(obj.name);
+  } else if ("age" in obj) {
+    console.log(obj.age);
+  }
+}
 ```
