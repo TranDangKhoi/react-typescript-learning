@@ -1,38 +1,18 @@
 import { useEffect, useReducer, useRef, useState } from "react";
+import useTodos from "./hooks/useTodos";
 
 const Heading = ({ title }: { title: string }) => {
   return <h2 className="font-primary mb-5 font-bold text-2xl">{title}</h2>;
 };
-type ActionType =
-  | { type: "ADD"; text: string }
-  | { type: "REMOVE"; id: number };
-interface Todo {
-  id: number;
-  text: string;
-}
-const toDoReducer = (state: Todo[], action: ActionType) => {
-  switch (action.type) {
-    case "ADD":
-      return [
-        ...state,
-        {
-          id: state.length,
-          text: action.text,
-        },
-      ];
-    case "REMOVE":
-      return state.filter((todo: Todo) => todo.id !== action.id);
-    default:
-      throw new Error("Error");
-  }
-};
-const initialState: Todo[] = [];
+
 interface Data {
   id: number;
   text: string;
 }
+
 function App() {
   const [data, setData] = useState<Data | null>(null);
+  const { inputRef, handleAddTodo, handleRemoveTodo, todos } = useTodos([]);
   useEffect(() => {
     fetch("/data.json")
       .then((res) => res.json())
