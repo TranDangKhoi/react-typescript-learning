@@ -1,4 +1,4 @@
-import { useReducer, useRef } from "react";
+import { useEffect, useReducer, useRef, useState } from "react";
 
 const Heading = ({ title }: { title: string }) => {
   return <h2 className="font-primary mb-5 font-bold text-2xl">{title}</h2>;
@@ -26,30 +26,18 @@ const toDoReducer = (state: Todo[], action: ActionType) => {
       throw new Error("Error");
   }
 };
-const initialState: Todo[] = [
-  {
-    id: 1,
-    text: "Learn JS",
-  },
-];
+const initialState: Todo[] = [];
+interface Data {
+  id: number;
+  text: string;
+}
 function App() {
-  const [todos, dispatch] = useReducer(toDoReducer, initialState);
-  const inputRef = useRef<HTMLInputElement>(null);
-  const handleRemoveTodo = (id: number) => {
-    dispatch({
-      type: "REMOVE",
-      id,
-    });
-  };
-
-  const handleAddTodo = () => {
-    if (inputRef.current) {
-      dispatch({
-        type: "ADD",
-        text: inputRef.current.value,
-      });
-    }
-  };
+  const [data, setData] = useState<Data | null>(null);
+  useEffect(() => {
+    fetch("/data.json")
+      .then((res) => res.json())
+      .then((data) => setData(data));
+  }, []);
   return (
     <>
       <Heading title="To Do App"></Heading>
