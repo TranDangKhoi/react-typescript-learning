@@ -1,0 +1,1 @@
+// getDeepValue in Typescript

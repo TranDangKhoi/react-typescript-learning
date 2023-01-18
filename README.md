@@ -1479,3 +1479,13 @@ function log(obj: { name: string } | { age: number }) {
   }
 }
 ```
+
+`keyof`: Trả ra các key của một value/object bất kì
+
+```ts
+const myStudent = {
+  id: 1,
+  name: "Khoi",
+  age: 20,
+};
+```
