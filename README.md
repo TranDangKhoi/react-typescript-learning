@@ -1235,21 +1235,7 @@ Giống như việc bạn copy paste code trên StackOverFlow, code của ngư�
 
 Nếu bạn nào đã học Javascript thì sẽ có một function của `Array`, đó chính là `.map()` dùng để tùy chỉnh các giá trị bên trong mảng theo ý mình. Đối với `Mapped Type` cũng vậy, ta có sẵn một `Type` và ta sẽ tùy chỉnh nó theo ý mình
 
-## VD1 - cơ bản nhất, dễ hiểu nhất:
-
-```ts
-// Tạo ra một type có 2 properties là username và layout
-type AppConfig = {
-  username: string;
-  layout: string;
-};
-
-// Tạo ra một type tên là Username, và giá trị của nó sẽ từ AppConfig map sang, và ở đây type của AppConfig["username"] chính là string => type Username = string
-type Username = AppConfig["username"];
-// type Username = string
-```
-
-### VD2 - Bắt đầu củ chuối:
+### VD:
 
 ```ts
 // Các bạn cứ hiểu đây là một cái Middleware, được sử dụng để tùy chỉnh lại tất cả các properties bên trong 1 type thành giá trị boolean
@@ -1274,23 +1260,6 @@ type FeatureOptions = {
     newUserProfile: boolean;
 }
 */
-```
-
-### VD3: Index Signature
-
-```ts
-type Developer = {
-  name: string;
-  // Rest field sẽ có key là kiểu string và value là string hoặc number
-  [key: string]: string | number;
-};
-
-const Tofu: Developer = {
-  name: "Tran dang Khoi",
-  age: 20,
-  gender: "male",
-  school: "FPT Aptech",
-};
 ```
 
 # Mapping Modifiers
