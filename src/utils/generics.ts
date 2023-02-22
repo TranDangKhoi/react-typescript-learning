@@ -57,3 +57,11 @@ console.log(ranker(languages, ({ difficulty }) => difficulty));
 // Ví dụ khi bạn sử dụng thư viện của thg nào đó phát triển
 // Nó có một cái input, và có thể truyền vào type và các bạn chỉ được phép sử dụng các
 // type như text, email, datetime, ... khi gõ vào các cái khác thì nó bị lỗi
+
+const sumOfGenerics = <T>(string1: T, string2: T) => {
+  if (typeof string1 === "string") {
+    return string1 + string2;
+  }
+};
+
+console.log(sumOfGenerics("2", "2"));
